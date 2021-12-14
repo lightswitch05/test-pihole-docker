@@ -1,0 +1,20 @@
+version: "3"
+
+# More info at https://github.com/pi-hole/docker-pi-hole/ and https://docs.pi-hole.net/
+services:
+  pihole:
+    build:
+      context: .
+    #image: pihole/pihole:special-core-tweak-gravity
+    ports:
+      - "8053:53/tcp"
+      - "8053:53/udp"
+      - "8067:67/udp"
+      - "9080:80/tcp"
+    environment:
+      TZ: 'America/New_York'
+      DNS1: '127.0.0.1#8080'
+      DNS2: 'no'
+      WEBPASSWORD: 'password'
+    volumes:
+      - './etc-pihole/:/etc/pihole/'
