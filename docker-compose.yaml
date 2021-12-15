@@ -1,15 +1,9 @@
 version: "3"
 
-# More info at https://github.com/pi-hole/docker-pi-hole/ and https://docs.pi-hole.net/
 services:
-  pihole:
-    build:
-      context: .
-    #image: pihole/pihole:special-core-tweak-gravity
+  pihole-broken:
+    image: pihole/pihole:2021.11
     ports:
-      - "8053:53/tcp"
-      - "8053:53/udp"
-      - "8067:67/udp"
       - "9080:80/tcp"
     environment:
       TZ: 'America/New_York'
@@ -17,4 +11,29 @@ services:
       DNS2: 'no'
       WEBPASSWORD: 'password'
     volumes:
-      - './etc-pihole/:/etc/pihole/'
+      - './etc-pihole-broken/:/etc/pihole/'
+
+  pihole-fixed:
+    build:
+      context: .
+    ports:
+      - "9081:80/tcp"
+    environment:
+      TZ: 'America/New_York'
+      DNS1: '127.0.0.1#8080'
+      DNS2: 'no'
+      WEBPASSWORD: 'password'
+    volumes:
+      - './etc-pihole-fixed/:/etc/pihole/'
+
+  pihole-test:
+    image: pihole/pihole:special-core-tweak-gravity
+    ports:
+      - "9082:80/tcp"
+    environment:
+      TZ: 'America/New_York'
+      DNS1: '127.0.0.1#8080'
+      DNS2: 'no'
+      WEBPASSWORD: 'password'
+    volumes:
+      - './etc-pihole-test/:/etc/pihole/'
